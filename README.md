@@ -7,6 +7,7 @@ This script has been tested using OneSync On and operates at a maximum speed of 
 This script is completely open source and has no use of the FiveMs escrow system!
 
 [Video Preview](https://youtu.be/xurD9OySnfk)
+[My Discord](https://discord.gg/xPcKNWZMpG)
 
 ## Features:
 
