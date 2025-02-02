@@ -1,6 +1,6 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
-local entrenceDoorOpen = false 
+local entrenceDoorOpen = false
 local isDoorHacked = false
 local IdProp
 local isParticlePlaying = false

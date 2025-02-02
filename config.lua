@@ -2,6 +2,8 @@ Config = Config or {}
 
 Config.HackItem = "thermite"
 
+Config.NewQB = true
+
 Config.Thermitehack = {
     iterations = 1, -- is the amount of iterations the player has to complete
     numberOfNodes = 11, -- Amount of nodes on the hack that you have to move around
