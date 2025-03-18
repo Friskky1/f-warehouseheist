@@ -24,10 +24,13 @@ This script is completely open source and has no use of the FiveMs escrow system
 
 [qb-target](https://github.com/qbcore-framework/qb-target),
 
-### Addons
+## Must Install Addons
 
 [Mini Game](https://github.com/Byte-Labs-Studio/bl_ui),
 
 [MLO Requirement](https://www.gta5-mods.com/maps/mlo-warehouse-sp-fivem)
 
 ### Its a quick and easy installation that is just a drag and drop and configure the config.
+
+## Credits
+Discord: theepsychojedi (Doing all my bug testing for the 1.5.0 update) Check out their server. (https://discord.gg/InfiniteRP)

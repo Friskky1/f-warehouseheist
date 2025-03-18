@@ -1,13 +1,20 @@
 Config = Config or {}
 
+Config.Debug = true
+
 Config.HackItem = "thermite"
 
-Config.NewQB = true
+Config.Inventory = "qb" -- qb, ps, lj and qs inventory compatible (Ox compatible in a upcoming update target and inventory)
 
 Config.Thermitehack = {
     iterations = 1, -- is the amount of iterations the player has to complete
     numberOfNodes = 11, -- Amount of nodes on the hack that you have to move around
-    duration = 13, -- seconds you have to complete 1 of the hacks
+    duration = 13, -- seconds you have to complete 1 of the hack(s)
+}
+
+Config.RequiredPDOnDuty = {
+    amount = 1,
+    policejobname = "police" -- the actual name of the job in qb-core/shared/jobs.lua
 }
 
 Config.HeistCoolDown = 90 -- (Minutes) Till heist can be hit again

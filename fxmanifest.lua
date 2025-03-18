@@ -4,7 +4,7 @@ lua54 'yes'
 
 author 'Friskky Developments'
 description 'Warehouse Heist'
-version '1.0.1'
+version '1.5.0'
 
 client_scripts {
 	'client/*.lua'

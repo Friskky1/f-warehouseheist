@@ -16,7 +16,7 @@ RegisterNetEvent("f-warehousehiest:client:alertcops", function()
 			job_table = {'police'}, 
 			coords = data.coords,
 			title = '10-68 - Armed Robbery',
-			message = 'Armed Robbery at Secured warehouse'..data.street, 
+			message = 'Armed Robbery at Secured warehouse '..data.street, 
 			flash = 0,
 			unique_id = data.unique_id,
 			sound = 1,

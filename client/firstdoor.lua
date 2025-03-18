@@ -1,11 +1,13 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
-local entrenceDoorOpen = false
-local isDoorHacked = false
 local IdProp
 local isParticlePlaying = false
 local particleId = nil
 local thermitePropCoords = nil
+local doorStates = {
+    entranceDoorOpen = false,
+    isDoorHacked = false
+}
 
 local function ReviveFirstDoorHack()
     exports['qb-target']:AddBoxZone("EntranceDoor", vector3(982.63, -2281.10, 30.65), 1.0, 1.5, {
@@ -48,11 +50,24 @@ local function EndParticleEffect()
     end
 end
 
+local function GetDoorState()
+    QBCore.Functions.TriggerCallback('f-warehouseHeist:server:GetDoorState', function(state)
+        doorStates = state
+    end)
+end
+
 RegisterNetEvent("f-warehouseHeist:client:FullResetHeist", function()
-    entrenceDoorOpen = false
-    isDoorHacked = false
+    TriggerServerEvent('f-warehouseHeist:server:UpdateDoorState', {
+        entranceDoorOpen = false,
+        isDoorHacked = false
+    })
     ReviveFirstDoorHack()
     TriggerEvent("f-warehouseHeist:client:deleteguards")
+end)
+
+RegisterNetEvent('f-warehouseHeist:client:SyncDoorState', function(state)
+    doorStates.entranceDoorOpen = state.entranceDoorOpen
+    doorStates.isDoorHacked = state.isDoorHacked
 end)
 
 RegisterNetEvent("f-warehouseHeist:client:firstdoorhack", function()
@@ -67,57 +82,66 @@ RegisterNetEvent("f-warehouseHeist:client:firstdoorhack", function()
     local rotx, roty, rotz = table.unpack(vec3(GetEntityRotation(PlayerPedId())))
     local bagscene = NetworkCreateSynchronisedScene(982.66, -2281.585, 30.51, rotx, roty, rotz, 2, false, false, 1065353216, 0, 1.3)
     local bag = CreateObject(GetHashKey("hei_p_m_bag_var22_arm_s"), 83.51, -2281.99, 30.51, true, true, false)
+    QBCore.Functions.TriggerCallback('f-warehouseHeist:server:GetPoliceCount', function(policeCount)
+        if hasItem then
+            if not doorStates.isDoorHacked then
+                if policeCount >= Config.RequiredPDOnDuty.amount then
+                    RequestModel("hei_prop_heist_thermite")
+                    while not HasModelLoaded("hei_prop_heist_thermite") do Wait(10) end
+                    RequestAnimDict("anim@heists@ornate_bank@thermal_charge")
+                    while not HasAnimDictLoaded("anim@heists@ornate_bank@thermal_charge") do Wait(10) end
+                    Wait(100)
+                    TaskGoStraightToCoord(ped, 983.51, -2281.99, 30.51, 1, 1000, 86.1, 0)
+                    Wait(3000)
+                    local IdProp = CreateObject('hei_prop_heist_thermite', pedco, true, true, false)
+                    thermitePropCoords = IdProp
+                    AttachEntityToEntity(IdProp, ped, boneIndex, 0.0, 0.028, 0.001, 190.0, 175.0, 0.0, true, true, false, true, 1, true)
+                    NetworkAddPedToSynchronisedScene(ped, bagscene, "anim@heists@ornate_bank@thermal_charge", "thermal_charge", 1.5, -4.0, 1, 16, 1148846080, 0)
+                    NetworkAddEntityToSynchronisedScene(bag, bagscene, "anim@heists@ornate_bank@thermal_charge", "bag_thermal_charge", 4.0, -8.0, 1)
+                    NetworkStartSynchronisedScene(bagscene)
+                    Wait(5700)
+                    AttachEntityToEntity(IdProp, panel, boneIndex, -1.08, -0.09, -0.08, 270.0, 0.0, 180.0, true, true, false, true, 1, true)
+                    FreezeEntityPosition(IdProp)
+                    Wait(500)
+                    ClearPedTasksImmediately(ped)
+                    DeleteObject(bag)
 
-    if hasItem then
-        if not isDoorHacked then
-            RequestModel("hei_prop_heist_thermite")
-            while not HasModelLoaded("hei_prop_heist_thermite") do Wait(10) end
-            RequestAnimDict("anim@heists@ornate_bank@thermal_charge")
-            while not HasAnimDictLoaded("anim@heists@ornate_bank@thermal_charge") do Wait(10) end
-            Wait(100)
-            TaskGoStraightToCoord(ped, 983.51, -2281.99, 30.51, 1, 1000, 86.1, 0)
-            Wait(3000)
-            local IdProp = CreateObject('hei_prop_heist_thermite', pedco, true, true, false)
-            thermitePropCoords = IdProp
-            AttachEntityToEntity(IdProp, ped, boneIndex, 0.0, 0.028, 0.001, 190.0, 175.0, 0.0, true, true, false, true, 1, true)
-            NetworkAddPedToSynchronisedScene(ped, bagscene, "anim@heists@ornate_bank@thermal_charge", "thermal_charge", 1.5, -4.0, 1, 16, 1148846080, 0)
-            NetworkAddEntityToSynchronisedScene(bag, bagscene, "anim@heists@ornate_bank@thermal_charge", "bag_thermal_charge", 4.0, -8.0, 1)
-            NetworkStartSynchronisedScene(bagscene)
-            Wait(5700)
-            AttachEntityToEntity(IdProp, panel, boneIndex, -1.08, -0.09, -0.08, 270.0, 0.0, 180.0, true, true, false, true, 1, true)
-            FreezeEntityPosition(IdProp)
-            Wait(500)
-            ClearPedTasksImmediately(ped)
-            DeleteObject(bag)
+                    local hacksuccess = exports.bl_ui:Untangle(Config.Thermitehack.iterations, {
+                        numberOfNodes = Config.Thermitehack.numberOfNodes,
+                        duration = Config.Thermitehack.duration * 1000,
+                    })
+                    if hacksuccess then
+                        QBCore.Functions.Notify("You passed the hack the door will now open soon", "success", 5000)
+                        TriggerServerEvent("f-warehouseHeist:server:RemoveThermite")
+                        TriggerEvent("f-warehouseHeist:client:spawnlootboxes")
+                        TriggerEvent("f-warehouseHeist:client:spawnguards")
+                        StartParticleEffect()
+                        Wait(10000)
+                        EndParticleEffect()
+                        TriggerEvent("f-warehouseHeist:client:alertcops")
+                        TriggerServerEvent("f-warehouseHeist:server:HeistStarted")
 
-            local hacksuccess = exports.bl_ui:Untangle(Config.Thermitehack.iterations, {
-                numberOfNodes = Config.Thermitehack.numberOfNodes,
-                duration = Config.Thermitehack.duration * 1000,
-            })
-            if hacksuccess then
-                QBCore.Functions.Notify("You passed the hack the door will now open soon", "success", 5000)
-                TriggerServerEvent("f-warehouseHeist:server:RemoveThermite")
-                TriggerEvent("f-warehouseHeist:client:spawnlootboxes")
-                TriggerEvent("f-warehouseHeist:client:spawnguards")
-                StartParticleEffect()
-                Wait(10000)
-                EndParticleEffect()
-                TriggerEvent("f-warehouseHeist:client:alertcops")
-                TriggerServerEvent("f-warehouseHeist:server:HeistStarted")
-                entrenceDoorOpen = true
-                isDoorHacked = true
-                DeleteObject(IdProp)
-                exports['qb-target']:RemoveZone("EntranceDoor")
+                        TriggerServerEvent('f-warehouseHeist:server:UpdateDoorState', {
+                            entranceDoorOpen = true,
+                            isDoorHacked = true
+                        })
+                        DeleteObject(IdProp)
+                        exports['qb-target']:RemoveZone("EntranceDoor")
+                    else
+                        TriggerServerEvent("f-warehouseHeist:server:RemoveThermite")
+                        DeleteObject(IdProp)
+                        QBCore.Functions.Notify("You failed the hack", "error", 5000)
+                    end
+                else
+                    QBCore.Functions.Notify("Not enough police on duty", "error", 5000)
+                end
             else
-                DeleteObject(IdProp)
-                QBCore.Functions.Notify("You failed the hack", "error", 5000)
+                QBCore.Functions.Notify("The door has already been Hacked", "error", 5000)
             end
         else
-            QBCore.Functions.Notify("The door has already been Hacked", "error", 5000)
+            QBCore.Functions.Notify("You dont have the requied tools to hack the door", "error", 5000)
         end
-    else
-        QBCore.Functions.Notify("You dont have the requied tools to hack the door", "error", 5000)
-    end
+    end)
 end)
 
 CreateThread(function()
@@ -133,7 +157,7 @@ CreateThread(function()
                 EntranceDoorObject = GetClosestObjectOfType(Config.EntrenceDoor.coords.xyz, 5.0, Config.EntrenceDoor.Object, false, false, false)
             end
             if EntranceDoorObject ~= 0 then
-                if entrenceDoorOpen then
+                if doorStates.entranceDoorOpen then
                     FreezeEntityPosition(EntranceDoorObject, false)
                 else
                     SetEntityHeading(EntranceDoorObject, Config.EntrenceDoor.Closed)
