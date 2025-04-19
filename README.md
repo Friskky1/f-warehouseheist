@@ -33,4 +33,4 @@ This script is completely open source and has no use of the FiveMs escrow system
 ### Its a quick and easy installation that is just a drag and drop and configure the config.
 
 ## Credits
-Discord: theepsychojedi (Doing all my bug testing for the 1.5.0 update) Check out their server. (https://discord.gg/InfiniteRP)
+Discord: theepsychojedi (Doing all my bug testing for the 1.5.0 update)
