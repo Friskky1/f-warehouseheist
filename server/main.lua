@@ -109,6 +109,8 @@ RegisterNetEvent("f-warehouseHeist:server:RemoveThermite", function()
         TriggerClientEvent('qb-inventory:client:ItemBox', src, Config.HackItem, 'remove', 1)
     elseif Config.Inventory == "qs" then
         exports['qs-inventory']:RemoveItem(src, Config.HackItem, 1)
+    elseif Config.Inventory == "ox" then
+        exports.ox_inventory:RemoveItem(src, Config.HackItem, 1, nil, nil, false)
     end
 end)
 
@@ -134,6 +136,12 @@ RegisterNetEvent("f-warehouseHeist:server:lootbox1", function()
                 exports['qs-inventory']:AddItem(src, FoundWeapon[1], FoundWeapon[2])
             end
             exports['qs-inventory']:AddItem(src, OtherItems[1], OtherItems[2])
+            islootbox1looted = true
+        elseif Config.Inventory == "ox" then
+            if findweaponschance <= findweaponsodds then
+                exports.ox_inventory:AddItem(src, FoundWeapon[1], FoundWeapon[2], nil, nil, false)
+            end
+            exports.ox_inventory:AddItem(src, FoundWeapon[1], FoundWeapon[2], nil, nil, false)
             islootbox1looted = true
         end
         islootbox1looted = true
@@ -163,6 +171,12 @@ RegisterNetEvent("f-warehouseHeist:server:lootbox2",function()
             end
             exports['qs-inventory']:AddItem(src, OtherItems[1], OtherItems[2])
             islootbox2looted = true
+        elseif Config.Inventory == "ox" then
+            if findweaponschance <= findweaponsodds then
+                exports.ox_inventory:AddItem(src, FoundWeapon[1], FoundWeapon[2], nil, nil, false)
+            end
+            exports.ox_inventory:AddItem(src, OtherItems[1], OtherItems[2], nil, nil, false)
+            islootbox1looted = true
         end
         islootbox2looted = true
     end
@@ -191,6 +205,12 @@ RegisterNetEvent("f-warehouseHeist:server:lootbox3",function()
             end
             exports['qs-inventory']:AddItem(src, OtherItems[1], OtherItems[2])
             islootbox3looted = true
+        elseif Config.Inventory == "ox" then
+            if findweaponschance <= findweaponsodds then
+                exports.ox_inventory:AddItem(src, FoundWeapon[1], FoundWeapon[2], nil, nil, false)
+            end
+            exports.ox_inventory:AddItem(src, OtherItems[1], OtherItems[2], nil, nil, false)
+            islootbox1looted = true
         end
         islootbox3looted = true
     end
@@ -219,6 +239,12 @@ RegisterNetEvent("f-warehouseHeist:server:lootbox4",function()
             end
             exports['qs-inventory']:AddItem(src, OtherItems[1], OtherItems[2])
             islootbox4looted = true
+        elseif Config.Inventory == "ox" then
+            if findweaponschance <= findweaponsodds then
+                exports.ox_inventory:AddItem(src, FoundWeapon[1], FoundWeapon[2], nil, nil, false)
+            end
+            exports.ox_inventory:AddItem(src, OtherItems[1], OtherItems[2], nil, nil, false)
+            islootbox1looted = true
         end
         islootbox4looted = true
     end
@@ -301,8 +327,17 @@ RegisterNetEvent("f-warehouseHeist:server:lootboxsafe1", function()
                 Player.Functions.AddMoney("cash", cash, "Safe Reward Money")
             end
             exports['qs-inventory']:AddItem(src, OtherItems[1], OtherItems[2])
-        end
+        elseif Config.Inventory == "ox" then
+            if findweaponschance <= findweaponsodds then
+                exports.ox_inventory:AddItem(src, SafeWeapons[1], SafeWeapons[2], nil, nil, false)
+            end
+            if Config.UseMarkedBills then
+                exports.ox_inventory:AddItem(src, "black_money", markedbillbagrewardamount, info, nil, false)
+            else
+                Player.Functions.AddMoney("cash", cash, "Safe Reward Money")
+            end
 
+        end
         islootsafe1looted = true
     end
 end)

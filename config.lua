@@ -4,7 +4,7 @@ Config.Debug = true
 
 Config.HackItem = "thermite"
 
-Config.Inventory = "qb" -- qb, ps, lj and qs inventory compatible (Ox compatible in a upcoming update target and inventory)
+Config.Inventory = "ps" -- qb, ps, lj, ox and qs inventory compatible (Ox compatible in a upcoming update target and inventory)
 
 Config.Thermitehack = {
     iterations = 1, -- is the amount of iterations the player has to complete
