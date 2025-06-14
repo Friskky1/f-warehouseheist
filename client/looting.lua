@@ -5,6 +5,7 @@ local box2coords = Config.LootBoxes.box2coords
 local box3coords = Config.LootBoxes.box3coords
 local box4coords = Config.LootBoxes.box4coords
 local safe1coords = Config.LootBoxes.safe1coords
+local Target = Config.Target
 
 local heistState = {
     isHeistStarted = false,
@@ -21,107 +22,202 @@ local function SpawnLootBoxes()
     if heistState.isHeistStarted then
         -- Box 1
         if not heistState.lootStates.box1 then
-            exports['qb-target']:AddBoxZone("Box1", box1coords, 2.0, 1.5, {
-                name = "Box1",
-                heading = 85.113,
-                debugPoly = false,
-                minZ = 30.0,
-                maxZ = 31.0,
-            }, {
-                options = {
-                    {
-                        type = "client",
-                        event = "f-warehouseHeist:client:lootlootbox1",
-                        icon = "fas fa-user-secret",
-                        label = "Loot Box 1",
+            if Target == "qb" then
+                exports['qb-target']:AddBoxZone("Box1", box1coords, 2.0, 1.5, {
+                    name = "Box1",
+                    heading = 85.113,
+                    debugPoly = false,
+                    minZ = 30.0,
+                    maxZ = 31.0,
+                }, {
+                    options = {
+                        {
+                            type = "client",
+                            event = "f-warehouseHeist:client:lootlootbox1",
+                            icon = "fas fa-user-secret",
+                            label = "Loot Box 1",
+                        },
                     },
-                },
-                distance = 2.5
-            })
+                    distance = 2.5
+                })
+            elseif Target == "ox" then
+                exports.ox_target:addBoxZone({
+                    name = "Box1",
+                    coords = box1coords,
+                    rotation = 85.113,
+                    size = vec3(3.0, 2.5, 1.0),
+                    debug = false,
+                    options = {
+                        {
+                            icon = 'fas fa-user-secret',
+                            type = 'client',
+                            event = 'f-warehouseHeist:client:lootlootbox1',
+                            label = 'Loot Box 1',
+                            distance = 2.5
+                        },
+                    },
+                })
+            end
         end
 
         -- Box 2
         if not heistState.lootStates.box2 then
-            exports['qb-target']:AddBoxZone("Box2", box2coords, 2.0, 1.5, {
-                name = "Box2",
-                heading = 85.113,
-                debugPoly = false,
-                minZ = 32.0,
-                maxZ = 33.0,
-            }, {
-                options = {
-                    {
-                        type = "client",
-                        event = "f-warehouseHeist:client:lootlootbox2",
-                        icon = "fas fa-user-secret",
-                        label = "Loot Box 2",
+            if Target == "qb" then
+                exports['qb-target']:AddBoxZone("Box2", box2coords, 2.0, 1.5, {
+                    name = "Box2",
+                    heading = 85.113,
+                    debugPoly = false,
+                    minZ = 32.0,
+                    maxZ = 33.0,
+                }, {
+                    options = {
+                        {
+                            type = "client",
+                            event = "f-warehouseHeist:client:lootlootbox2",
+                            icon = "fas fa-user-secret",
+                            label = "Loot Box 2",
+                        },
                     },
-                },
-                distance = 3.2
-            })
+                    distance = 3.2
+                })
+            elseif Target == "ox" then
+                exports.ox_target:addBoxZone({
+                    name = "Box2",
+                    coords = box2coords,
+                    rotation = 85.113,
+                    size = vec3(3.0, 2.5, 1.0),
+                    debug = false,
+                    options = {
+                        {
+                            icon = 'fas fa-user-secret',
+                            type = 'client',
+                            event = 'f-warehouseHeist:client:lootlootbox2',
+                            label = 'Loot Box 2',
+                            distance = 2.5
+                        },
+                    },
+                })
+            end
         end
 
         -- Box 3
         if not heistState.lootStates.box3 then
-            exports['qb-target']:AddBoxZone("Box3", box3coords, 2.0, 1.5, {
-                name = "Box3",
-                heading = 85.113,
-                debugPoly = false,
-                minZ = 30.0,
-                maxZ = 31.0,
-            }, {
-                options = {
-                    {
-                        type = "client",
-                        event = "f-warehouseHeist:client:lootlootbox3",
-                        icon = "fas fa-user-secret",
-                        label = "Loot Box 3",
+            if Target == "qb" then
+                exports['qb-target']:AddBoxZone("Box3", box3coords, 2.0, 1.5, {
+                    name = "Box3",
+                    heading = 85.113,
+                    debugPoly = false,
+                    minZ = 30.0,
+                    maxZ = 31.0,
+                }, {
+                    options = {
+                        {
+                            type = "client",
+                            event = "f-warehouseHeist:client:lootlootbox3",
+                            icon = "fas fa-user-secret",
+                            label = "Loot Box 3",
+                        },
                     },
-                },
-                distance = 2.5
-            })
+                    distance = 2.5
+                })
+            elseif Target == "ox" then
+                exports.ox_target:addBoxZone({
+                    name = "Box3",
+                    coords = box3coords,
+                    rotation = 85.113,
+                    size = vec3(3.0, 2.5, 1.0),
+                    debug = false,
+                    options = {
+                        {
+                            icon = 'fas fa-user-secret',
+                            type = 'client',
+                            event = 'f-warehouseHeist:client:lootlootbox3',
+                            label = 'Loot Box 3',
+                            distance = 2.5
+                        },
+                    },
+                })
+            end
         end
 
         -- Box 4
         if not heistState.lootStates.box4 then
-            exports['qb-target']:AddBoxZone("Box4", box4coords, 2.0, 1.5, {
-                name = "Box4",
-                heading = 85.113,
-                debugPoly = false,
-                minZ = 30.0,
-                maxZ = 31.0,
-            }, {
-                options = {
-                    {
-                        type = "client",
-                        event = "f-warehouseHeist:client:lootlootbox4",
-                        icon = "fas fa-user-secret",
-                        label = "Loot Box 4",
+            if Target == "qb" then
+                exports['qb-target']:AddBoxZone("Box4", box4coords, 2.0, 1.5, {
+                    name = "Box4",
+                    heading = 85.113,
+                    debugPoly = false,
+                    minZ = 30.0,
+                    maxZ = 31.0,
+                }, {
+                    options = {
+                        {
+                            type = "client",
+                            event = "f-warehouseHeist:client:lootlootbox4",
+                            icon = "fas fa-user-secret",
+                            label = "Loot Box 4",
+                        },
                     },
-                },
-                distance = 2.5
-            })
+                    distance = 2.5
+                })
+            elseif Target == "ox" then
+                exports.ox_target:addBoxZone({
+                    name = "Box4",
+                    coords = box4coords,
+                    rotation = 85.113,
+                    size = vec3(3.0, 2.5, 1.0),
+                    debug = false,
+                    options = {
+                        {
+                            icon = 'fas fa-user-secret',
+                            type = 'client',
+                            event = 'f-warehouseHeist:client:lootlootbox4',
+                            label = 'Loot Box 4',
+                            distance = 2.5
+                        },
+                    },
+                })
+            end
         end
 
         -- Safe 1
         if not heistState.lootStates.safe1 then
-            exports['qb-target']:AddBoxZone("Safe1", safe1coords, 1.0, 1.0, {
-                name = "Safe1",
-                heading = 85.113,
-                debugPoly = false,
-                minZ = 30.0,
-                maxZ = 31.0,
-            }, {
-                options = {
-                    {
-                        type = "client",
-                        event = "f-warehouseHeist:client:lootlootsafe1",
-                        icon = "fas fa-user-secret",
-                        label = "Loot Safe 1",
+            if Target == "qb" then
+                exports['qb-target']:AddBoxZone("Safe1", safe1coords, 1.0, 1.0, {
+                    name = "Safe1",
+                    heading = 85.113,
+                    debugPoly = false,
+                    minZ = 30.0,
+                    maxZ = 31.0,
+                }, {
+                    options = {
+                        {
+                            type = "client",
+                            event = "f-warehouseHeist:client:lootlootsafe1",
+                            icon = "fas fa-user-secret",
+                            label = "Loot Safe 1",
+                        },
                     },
-                },
-                distance = 2.5
-            })
+                    distance = 2.5
+                })
+            elseif Target == "ox" then
+                exports.ox_target:addBoxZone({
+                    name = "Safe1",
+                    coords = safe1coords,
+                    rotation = 85.113,
+                    size = vec3(2.0, 1.5, 1.0),
+                    debug = false,
+                    options = {
+                        {
+                            icon = 'fas fa-user-secret',
+                            type = 'client',
+                            event = 'f-warehouseHeist:client:lootlootsafe1',
+                            label = 'Loot Safe 1',
+                            distance = 2.5
+                        },
+                    },
+                })
+            end
         end
     end
 end
@@ -139,7 +235,12 @@ RegisterNetEvent('f-warehouseHeist:client:SyncLootState', function(lootId, state
         heistState.lootStates[lootId] = state
         if state then
             -- Remove the loot box zone after it has been looted
-            exports['qb-target']:RemoveZone(lootId)
+            if Target == "qb" then
+                exports['qb-target']:RemoveZone(lootId)
+            elseif Target == "ox" then
+                Wait(100)
+                exports.ox_target:removeZone(lootId)
+            end
         else
             -- Optionally, you can add it back to the target if the box isn't looted
             SpawnLootBoxes()  -- Or simply call a function to recheck loot availability

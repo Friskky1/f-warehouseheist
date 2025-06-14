@@ -1,10 +1,11 @@
 Config = Config or {}
 
-Config.Debug = true
+Config.Debug = false
 
 Config.HackItem = "thermite"
 
-Config.Inventory = "ps" -- qb, ps, lj, ox and qs inventory compatible (Ox compatible in a upcoming update target and inventory)
+Config.Inventory = "ox" -- qb, ps, lj, ox and qs inventory compatible
+Config.Target = "ox" -- qb or ox
 
 Config.Thermitehack = {
     iterations = 1, -- is the amount of iterations the player has to complete
@@ -29,7 +30,7 @@ Config.LootBoxes = { -- Only touch if you plan on changing the coords on where t
 
 Config.UseMarkedBills = true -- If you use marked bills then the price of each marked bill will be worth the amount set in Config.SafeRewardAmount if false then it will give you the reward amount in cash
 Config.AmountOfMarkedBillsToGet = {1, 3} -- amount of marked bill bags to get upon reward
-Config.SafeRewardAmount = {10000, 17500} -- Gives cash to the player when safe is looted if Config.UseMarkedBills = false
+Config.SafeRewardAmount = {25000, 40000} -- Gives cash to the player when safe is looted if Config.UseMarkedBills = false
 
 Config.Lootboxrewards = {
     weapons = {

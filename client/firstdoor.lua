@@ -4,29 +4,49 @@ local IdProp
 local isParticlePlaying = false
 local particleId = nil
 local thermitePropCoords = nil
+local Target = Config.Target
 local doorStates = {
     entranceDoorOpen = false,
     isDoorHacked = false
 }
 
 local function ReviveFirstDoorHack()
-    exports['qb-target']:AddBoxZone("EntranceDoor", vector3(982.63, -2281.10, 30.65), 1.0, 1.5, {
-        name = "EntranceDoor",
-        heading = 85.113,
-        debugPoly = false,
-        minZ = 30.0,
-        maxZ = 31.5,
-    }, {
-        options = {
-            {
-                type = "client",
-                event = "f-warehouseHeist:client:firstdoorhack",
-                icon = "fas fa-user-secret",
-                label = "Hack",
+    if Target == "qb" then
+        exports['qb-target']:AddBoxZone("EntranceDoor", vector3(982.63, -2281.10, 30.65), 1.0, 1.5, {
+            name = "EntranceDoor",
+            heading = 85.113,
+            debugPoly = false,
+            minZ = 30.0,
+            maxZ = 31.5,
+        }, {
+            options = {
+                {
+                    type = "client",
+                    event = "f-warehouseHeist:client:firstdoorhack",
+                    icon = "fas fa-user-secret",
+                    label = "Hack",
+                },
             },
-        },
-        distance = 2.5
-    })
+            distance = 2.5
+        })
+    elseif Target == "ox" then
+        exports.ox_target:addBoxZone({
+            name = "EntranceDoor",
+            coords = vector3(982.63, -2281.10, 30.65),
+            rotation = 85.113,
+            size = vec3(1.0, 1.5, 1.5),
+            debug = false,
+            options = {
+                {
+                    icon = 'fas fa-user-secret',
+                    type = 'client',
+                    event = 'f-warehouseHeist:client:firstdoorhack',
+                    label = 'Hack',
+                    distance = 2.5
+                },
+            },
+        })
+    end
 end
 
 local function StartParticleEffect()
@@ -106,6 +126,11 @@ RegisterNetEvent("f-warehouseHeist:client:firstdoorhack", function()
                     ClearPedTasksImmediately(ped)
                     DeleteObject(bag)
 
+                    if exports['ps-buffs']:HasBuff("hacking") then
+                        Config.Thermitehack.numberOfNodes = Config.Thermitehack.numberOfNodes - 3
+                        Config.Thermitehack.duration = Config.Thermitehack.duration + 5
+                    end
+
                     local hacksuccess = exports.bl_ui:Untangle(Config.Thermitehack.iterations, {
                         numberOfNodes = Config.Thermitehack.numberOfNodes,
                         duration = Config.Thermitehack.duration * 1000,
@@ -126,7 +151,11 @@ RegisterNetEvent("f-warehouseHeist:client:firstdoorhack", function()
                             isDoorHacked = true
                         })
                         DeleteObject(IdProp)
-                        exports['qb-target']:RemoveZone("EntranceDoor")
+                        if Target == "qb" then
+                            exports['qb-target']:RemoveZone("EntranceDoor")
+                        elseif Target == "ox" then
+                            exports.ox_target:removeZone("EntranceDoor")
+                        end
                     else
                         TriggerServerEvent("f-warehouseHeist:server:RemoveThermite")
                         DeleteObject(IdProp)
@@ -171,23 +200,42 @@ CreateThread(function()
 end)
 
 CreateThread(function()
-    exports['qb-target']:AddBoxZone("EntranceDoor", vector3(982.63, -2281.10, 30.65), 1.0, 1.5, {
-        name = "EntranceDoor",
-        heading = 85.113,
-        debugPoly = false,
-        minZ = 30.0,
-        maxZ = 31.5,
-    }, {
-        options = {
-            {
-                type = "client",
-                event = "f-warehouseHeist:client:firstdoorhack",
-                icon = "fas fa-user-secret",
-                label = "Hack",
+    if Target == "qb" then
+        exports['qb-target']:AddBoxZone("EntranceDoor", vector3(982.63, -2281.10, 30.65), 1.0, 1.5, {
+            name = "EntranceDoor",
+            heading = 85.113,
+            debugPoly = false,
+            minZ = 30.0,
+            maxZ = 31.5,
+        }, {
+            options = {
+                {
+                    type = "client",
+                    event = "f-warehouseHeist:client:firstdoorhack",
+                    icon = "fas fa-user-secret",
+                    label = "Hack",
+                },
             },
-        },
-        distance = 2.5
-    })
+            distance = 2.5
+        })
+    elseif Target == "ox" then
+        exports.ox_target:addBoxZone({
+            name = "EntranceDoor",
+            coords = vector3(982.63, -2281.10, 30.65),
+            rotation = 85.113,
+            size = vec3(1.0, 1.5, 1.5),
+            debug = false,
+            options = {
+                {
+                    icon = 'fas fa-user-secret',
+                    type = 'client',
+                    event = 'f-warehouseHeist:client:firstdoorhack',
+                    label = 'Hack',
+                    distance = 2.5
+                },
+            },
+        })
+    end
 end)
 
 AddEventHandler('onResourceStop', function(resource)

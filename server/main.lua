@@ -331,8 +331,8 @@ RegisterNetEvent("f-warehouseHeist:server:lootboxsafe1", function()
             if findweaponschance <= findweaponsodds then
                 exports.ox_inventory:AddItem(src, SafeWeapons[1], SafeWeapons[2], nil, nil, false)
             end
-            if Config.UseMarkedBills then
-                exports.ox_inventory:AddItem(src, "black_money", markedbillbagrewardamount, info, nil, false)
+            if Config.UseMarkedBills then 
+                exports.ox_inventory:AddItem(src, "black_money", cash, nil, nil, false)
             else
                 Player.Functions.AddMoney("cash", cash, "Safe Reward Money")
             end
